@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="SunriseTime">日の出時間:</string>
+    <string name="SunsetTime">日没時間:</string>
+    <string name="app_name">日の出のセット</string>
+    <string name="languageName">日本語</string>
+</resources>

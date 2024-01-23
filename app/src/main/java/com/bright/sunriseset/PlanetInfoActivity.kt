@@ -4,6 +4,9 @@ import android.content.Context
 import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Spinner
 import com.bright.sunriseset.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -21,7 +24,13 @@ import java.util.Locale
 class PlanetInfoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var spinnerLanguage: Spinner
+    private val languages = arrayListOf(
+        Language(R.drawable.ic_flag_english, "English", "en"),
+        Language(R.drawable.ic_flag_china, "中文", "zh"),
+        Language(R.drawable.ic_flag_mongolia, "Монгол хэл", "mn"),
+        Language(R.drawable.ic_flag_japan, "日本語", "ja"),
+    )
     /**
      * Called when the activity is first created. This function initializes the activity, inflates the layout,
      * retrieves the current time, and asynchronously fetches sunrise and sunset times from an API.
@@ -61,6 +70,23 @@ class PlanetInfoActivity : AppCompatActivity() {
                 binding.textViewSunset.text =
                     "${getString(R.string.SunsetTime)} $localizedSunset"
             }
+        }
+
+        // Initialize the Spinner and set its adapter
+        spinnerLanguage = binding.spinnerLanguage
+        val spinnerAdapter = SpinnerAdapter(this, languages)
+        spinnerLanguage.adapter = spinnerAdapter
+
+        // Set an item selected listener to handle language changes
+        spinnerLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedLanguage = languages[position]
+                if (Locale.getDefault().language != selectedLanguage.code) {
+                    changeLanguage(selectedLanguage.code)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) { }
         }
     }
 
@@ -111,5 +137,14 @@ class PlanetInfoActivity : AppCompatActivity() {
             e.printStackTrace()
             null
         }
+    }
+
+    private fun changeLanguage(code: String) {
+        val config = resources.configuration
+        val newLocale = Locale(code)
+        Locale.setDefault(newLocale)
+        config.setLocale(newLocale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+        recreate()
     }
 }

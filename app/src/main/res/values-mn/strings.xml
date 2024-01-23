@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="SunriseTime">Мандах цаг:</string>
+    <string name="SunsetTime">Жаргах цаг:</string>
+    <string name="app_name">Нар мандах жаргах цаг</string>
+    <string name="languageName">Монгол</string>
+</resources>
